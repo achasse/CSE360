@@ -7,9 +7,12 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', include('image_space_app.urls')),
+    url(r'^home/$', include('image_space_app.urls')),
     url(r'^admin/', include(admin.site.urls)),           
     url(r'^signup/$', 'image_space_app.views.sign_up'),
     url(r'^login/$', 'image_space_app.views.login_user'),
+    url(r'^register/$', 'image_space_app.views.register', name = 'register'),
+    
 
 
 )
