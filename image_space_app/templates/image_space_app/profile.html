@@ -1,0 +1,15 @@
+{%extends "layouts/base.html" %}
+
+{% block content %}
+<div class="container" style="margin-top:30px">
+
+    <div id="box">
+        {% if user.is_authenticated %}
+		<h1>hello {{ user.username }}!</h1>
+		<img src="{{MEDIA_ROOT}}/{{ user.picture.url }}" />
+		{% else %}
+		<h1>hello anonymous!</h1>
+		{% endif %}
+    </div>
+</div>
+{% endblock %}

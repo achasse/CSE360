@@ -6,30 +6,73 @@ from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from image_space_app.forms import UserForm, UserProfileForm
-
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
     template = loader.get_template('image_space_app/index.html')
     context = RequestContext(request, {})
     return HttpResponse(template.render(context))
+def failed(request):
+    template = loader.get_template('image_space_app/login.html')
+    context = RequestContext(request, {})
+    return HttpResponse(template.render(context))
 def sign_up(request):
     template = loader.get_template('image_space_app/sign_up.html')
     context = RequestContext(request, {})
     return HttpResponse(template.render(context))
-def login_user(request):
+
+def profile(request):
+    template = loader.get_template('image_space_app/profile.html')
+    context = RequestContext(request, {})
+    return HttpResponse(template.render(context))
+def log_out(request):
     logout(request)
-    username = password = ''
-    if request.POST:
-        username = request.POST['email']
+    template = loader.get_template('image_space_app/logout_success.html')
+    context = RequestContext(request, {})
+    return HttpResponse(template.render(context))
+def login_user(request):
+    # Like before, obtain the context for the user's request.
+    context = RequestContext(request)
+
+    # If the request is a HTTP POST, try to pull out the relevant information.
+    if request.method == 'POST':
+        logout(request)
+        # Gather the username and password provided by the user.
+        # This information is obtained from the login form.
+        username = request.POST['username']
         password = request.POST['password']
 
+        # Use Django's machinery to attempt to see if the username/password
+        # combination is valid - a User object is returned if it is.
         user = authenticate(username=username, password=password)
-        if user is not None:
+
+        # If we have a User object, the details are correct.
+        # If None (Python's way of representing the absence of a value), no user
+        # with matching credentials was found.
+        if user:
+            # Is the account active? It could have been disabled.
             if user.is_active:
+                # If the account is valid and active, we can log the user in.
+                # We'll send the user back to the homepage.
                 login(request, user)
-                return HttpResponseRedirect('/index/')
-    return render_to_response('image_space_app/login.html', context_instance=RequestContext(request))
+                return HttpResponseRedirect('/profile/')
+            else:
+                # An inactive account was used - no logging in!
+                return HttpResponseRedirect('/failed/')
+        else:
+            # Bad login details were provided. So we can't log the user in.
+            #print "Invalid login details: {0}, {1}".format(username, password)
+            #return HttpResponse("Invalid login details supplied.")
+
+            #return HttpResponseRedirect('/profile/')
+            return render_to_response('image_space_app/login.html', {}, context)
+    # The request is not a HTTP POST, so display the login form.
+    # This scenario would most likely be a HTTP GET.
+    else:
+        # No context variables to pass to the template system, hence the
+        # blank dictionary object...
+        return render_to_response('image_space_app/index.html', {}, context)
 
 def register(request):
     # Like before, get the request's context.

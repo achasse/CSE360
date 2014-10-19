@@ -17,12 +17,14 @@
                         <div class="modal-content">
                                     <div class="panel-heading">
                                         <h5 class="panel-title">Sign In</h3>
-                                        <p>Welcome, {{ user.username }}.</p>
+                                        <p>Invalid Username/Password</p>
                                     </div>
+                                    <form class="form-horizontal" name="LoginForm" action="/login/" method="post">
+                                    {% csrf_token %}
                                     <div class="panel-body">
                                             <fieldset>
                                                 <div class="form-group">
-                                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus="">
+                                                    <input class="form-control" placeholder="Username" name="username" type="username" autofocus="">
                                                 </div>
                                                 <div class="form-group">
                                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">
@@ -33,9 +35,8 @@
                                                     </label>
                                                 </div>
                                                 <!-- Change this to a button or input when using this as a form -->
-
-                                                <button class="btn btn-sm btn-success" type="submit">Login</button>
-                                                <a href="/signup" class="btn btn-sm btn-success">Sign-Up</a>
+												<button class="btn btn-sm btn-success" type="submit">Login</button>
+                                                <a href="/register" class="btn btn-sm btn-success">Sign-Up</a>
                                             </fieldset>
                                         </form>
                                     </div>
