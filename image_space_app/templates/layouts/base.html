@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ImageSpace | {% block title %}Django{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% comment %}
+      Styles
+    {% endcomment %}
+    {% load staticfiles %}
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    
+    {% comment %}
+      JS
+    {% endcomment %}
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/bootstrap.js' %}" type="text/javascript"></script>
+    
+
+    {% comment %}
+      I'd use this for adding extra-styles or extra js
+    {% endcomment %}
+
+    {% block extrahead %}
+    {% endblock %}
+  </head>
+
+  <body>
+    {% comment %}
+      Navigation bar provides an attractive way to log in
+    {% endcomment %}
+
+    {% include 'image_space_app/partials/_navbar.html' %}
+    
+    {% comment %}
+      For messages framework displaying
+    {% endcomment %}
+
+    
+
+    {% comment %}
+      Page content goes here
+    {% endcomment %}
+    <div class="container-fluid" id="content_container">
+      <div class="col-md-8 col-md-offset-2">
+      <div id="messages" class="bg-">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+              <a class="close" data-dismiss="alert">×</a>
+              {{message}}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      {% block content %}
+      {% endblock %}
+      </div>
+    </div>
+
+    {% comment %}
+      Top level modals. For use with Bootstrap.
+    {% endcomment %}
+    
+    {% block modals %}
+    {% endblock %}
+  </body>
+</html>
