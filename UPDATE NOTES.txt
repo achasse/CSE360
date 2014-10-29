@@ -1,0 +1,5 @@
+Still trying to figure out Github... in order to get the test branch you have to 'Download ZIP'. If you try to clone it will grab the master and will not work. 
+
+You will have to run 'pip install -r image_space/requirements.pip' again after you grab the files and are in the right directory in powershell or cmd.
+
+Broke the redirect after an account is created. Although I don't remember if that was working in the first place. 
