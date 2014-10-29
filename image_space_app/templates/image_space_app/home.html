@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+{% block extrahead %}
+  {% load staticfiles %}
+  <link href="{% static 'css/slick.css' %}" rel="stylesheet" >
+  <script src="{% static 'js/slick.min.js' %}" type="text/javascript"></script>
+  <script src="{% static 'js/home.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row" id="main">  
+  <div class="page-header">
+    <h1>PicDrop</h1>
+    <p>A space for uploading and (possibly) editing your pictures</p>
+  </div>
+</div>
+
+<div class="row" id="latest_pictures">
+  <h2>Latest Pictures</h2>
+  <div class="latest_pictures">
+    {% for picture in latest_pictures %}
+      {% if picture.picture %}
+        <div>
+          <img src="{{picture.picture.url}}" class="img-responsive" >
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

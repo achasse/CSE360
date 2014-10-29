@@ -1,0 +1,59 @@
+<div class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" 
+      data-target="#navigationbarcollapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'home' %}">PicDrop <small>(Beta)</small></a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navigationbarcollapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li class="">
+          <a href="{% url 'home' %}">
+            Home
+          </a>
+        </li>
+        <li class=""><a href="/pictures">All Pictures</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+       {% if not user.is_authenticated %}
+        <li class=""><a href="{% url 'register' %}">Sign up</a></li>
+        <li class="">
+          <a href="#" data-toggle="modal" data-target="#sigin_modal">
+            Sign in
+          </a>
+        </li>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+          <li class=""><a href="{% url 'profile' %}">{{user}}</a></li>
+          <li class=""><a href="{% url 'logout' %}">Logout</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% comment %}
+  Modal for Login
+{% endcomment %}
+
+{% block modals %}
+  <div class="modal fade" id="sigin_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Sign in</h2>
+        </div>
+        <div class="modal-body">
+          {% include 'image_space_app/login/_login_form.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

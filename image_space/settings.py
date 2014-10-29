@@ -88,5 +88,4 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'image_space_app/media')
-
-
+LOGIN_URL = '/login/'
