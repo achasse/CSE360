@@ -1,0 +1,4 @@
+Used a thing called django-imagekit for photo editing, but it doesn't work very well. Not sure if it can be fixed or if we'll need to try something else. 
+It seems that the user upload works OK. 
+Broke the re-direct after a user creates an account somehow. 
+Also, before you to run ' pip install -r image_space/requirements.pip ' again as I added some. 
