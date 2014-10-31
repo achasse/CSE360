@@ -1,8 +1,10 @@
 <form class="form-horizontal" name="LoginForm" action="{% url 'register' %}" method="post"
            enctype="multipart/form-data">
     {% csrf_token %}
+    
     {{ user_form.as_p }}
     {{ profile_form.as_p }}
+    <input type="file" name="picture">
 
     <div class="controls">
         <button type="submit" class="btn btn-lg btn-success">Sign up</button>

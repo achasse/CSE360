@@ -15,9 +15,10 @@
                   <a href="{% url 'picture_edit' picture.id %}">
                     <button class="btn btn-primary" role="button">Edit</button>
                   </a>
-                  <a href="/profile/edit">
+                  <form class="form-inline" action="{% url 'change_picture' picture.id %}" method="post">
+                  {% csrf_token %}
                     <button class="btn btn-default" role="button">Profile</button>
-                  </a>
+                  </form>
                 {% endif %}
               {% endif %}
             </div>

@@ -20,7 +20,7 @@ from django.contrib import messages
 from image_space_app.models import UserPicture, User, UserProfile
 
 # Forms
-from image_space_app.forms import UserForm, UserProfileForm
+from image_space_app.forms import UserForm, UserProfileForm, UserPictureForm
 
 # ImageKit Spec
 from imagekit import ImageSpec
@@ -58,12 +58,12 @@ class PictureUpload(View):
         if 'new_picture' in request.FILES:
             picture = request.FILES['new_picture']
         else:
-            return redirect('/profile/')
+            return redirect(reverse('profile'))
         
         user.userpicture_set.create(picture=picture, title=request.POST['title']).save()
         user.save()
         messages.info(request, "Picture uploaded")
-        return redirect('/profile/')
+        return redirect(reverse('profile'))
 
 # This class is ready
 class PicturesList(ListView):
@@ -87,7 +87,7 @@ class PictureEdit(View):
             owned = True
 
         if not owned:
-            return redirect('/')
+            return redirect(reverse('home'))
 
         return render( request, template, {'picture': picture})
 
@@ -101,7 +101,7 @@ class PictureEdit(View):
             owned = True
 
         if not owned:
-            return redirect('/')
+            return redirect(reverse('home'))
 
         bright = float(request.POST["brightness"]) / 200 + 0.5
         print bright
@@ -134,7 +134,7 @@ class ProfileDetails(View):
         user = self.request.user
 
         try:
-            user_img_url = user.userprofile.picture.url
+            user_img_url = user.userprofile.picture.picture.url
         except:
             user_img_url = ""
 
@@ -168,30 +168,56 @@ class ProfileDetails(View):
 @login_required
 def log_out(request):
     logout(request)
-    return redirect('/')
+    return redirect(reverse('home'))
+
+def log_in(username, password, request, callback_success=None, 
+           callback_inactive=None, callback_fail=None):
+    user = authenticate(username=username, password=password)
+    print user
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            if callback_success is not None:
+                callback_success()
+            else:
+                return redirect(reverse('profile'))
+        else:
+            if callback_inactive is not None:
+                callback_inactive()
+            else:
+                messages.info(request, "Inactive user")
+    else:
+        if callback_fail is not None:
+            callback_fail()
+        else:
+            messages.info(request, "Bad login info")
+    return None
 
 class LoginUserView(View):
     def post(self, request):
         logout(request)
         username = request.POST['username']
         password = request.POST['password']
+        
+        redirect_maybe = log_in(username, password, request)
 
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-
-                return redirect('/profile')
-            else:
-                messages.info(request, "Inactive user")
-        else:
-            messages.info(request, "Bad login info")
+        if redirect_maybe is not None:
+            return redirect_maybe
 
         return render(request, 'image_space_app/login/login.html')
 
     def get(self, request):
         return render(request, 'image_space_app/login/login.html')
+
+class ProfilePictureChange(View):
+    http_method_names = ['post']
+    
+    @method_decorator(login_required)
+    def post(self, request, pk):
+        picture = UserPicture.objects.get(pk=pk)
+        request.user.userprofile.picture = picture
+        request.user.userprofile.save()
+        return redirect(reverse('profile'))
 
 class RegisterView(View):
     http_method_names = ['get', 'post']
@@ -200,33 +226,45 @@ class RegisterView(View):
         registered = False
         user_form = UserForm()
         profile_form = UserProfileForm()
+        picture_form = UserPictureForm()
         return render(request, 'image_space_app/register/register.html',
                       {'user_form': user_form, 'profile_form': profile_form,
-                       'registered': registered})
+                       'picture_form': picture_form, 'registered': registered})
 
     def post(self, request):
         logout(request)
         registered = False
         user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
-
-        if user_form.is_valid() and profile_form.is_valid():
+        
+        if user_form.is_valid():
             user = user_form.save()
-
+            password = user.password
             user.set_password(user.password)
             user.save()
-
-            profile = profile_form.save(commit=False)
-            profile.user = user
-
+            
             if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+                picture = UserPicture.objects.create(user=user, picture=request.FILES['picture'])
+                picture.save()
+            else:
+                picture = None
 
+            profile = UserProfile()
+            profile.user = user
+            profile.picture = picture
             profile.save()
-            registered = True
 
-            return redirect('/profile')
+            registered = True
+            
+            redirect_maybe = log_in(user.username, password, request)
+
+            if redirect_maybe is not None:
+                return redirect_maybe
+
         else:
+            print "user"
+            print user_form.errors
+            print "picture"
+            print  picture_form.errors
             return render(request, 'image_space_app/register/register.html',
-                      {'user_form': user_form, 'profile_form': profile_form,
-                       'registered': registered})
+                      {'user_form': user_form,
+                       'picture_form': picture_form, 'registered': registered})
