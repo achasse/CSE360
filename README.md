@@ -25,9 +25,6 @@ To continue your project on top of this, clone this code and do following. (Assu
 *The UI is built with twitter bootstrap, less and jquery*
 
 
-The home page does nothing other than taking email and password. If you click on the 'sign in' you will be taken to the same home page.
-
-
 ## To run sample unit test
 
 * run `python manage.py test image_space_app/tests`
@@ -39,3 +36,15 @@ The source file for test is at image_space/image_space_app/tests folder.
 *run `python manage.py harvest`
 
 *The functional test is written on Lettuce steps. You can see the tests at image_space/image_space_app/features folder*
+
+## Software used
+* django 1.7.1
+* lettuce 0.2.20 (Testing)
+* lxml 3.4.0
+* nose 1.3.4
+* cssselect 0.9.1
+* pillow 2.6.1 ImageField in models
+* pytz 2014.7
+* da_vinci 0.2.1 Brightness edit
+* SlickJS for slider
+* CamanJS for brightness in-browser edit

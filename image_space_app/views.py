@@ -30,6 +30,7 @@ from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.core.files import File
 
+from da_vinci import Image
 
 # This class is ready
 class RootView(TemplateView):
@@ -103,12 +104,17 @@ class PictureEdit(View):
         if not owned:
             return redirect(reverse('home'))
 
-        bright = float(request.POST["brightness"]) / 200 + 0.5
-        print bright
-        gen = Brightness(source=picture.picture)
-        gen.set_processor(bright)
-        new_picture = gen.generate()
-        picture.picture.save(picture.picture.url, File(new_picture))        
+        bright = float(request.POST["brightness"])
+        
+
+        im = Image(picture.picture.path)
+        im.adjust(brightness=bright)
+        im.save()
+        
+        #gen = Brightness(source=picture.picture)
+        #gen.set_processor(bright)
+        #new_picture = gen.generate()
+        
         messages.info(request, "Successful edit")
         return redirect(reverse('picture_details', args=(pk,)))
 

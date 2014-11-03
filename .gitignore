@@ -1,2 +1,3 @@
 *.pyc
 .idea
+/image_space_app/media/**/*

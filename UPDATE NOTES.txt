@@ -1,3 +1,14 @@
+11/3/14
+New requirements added (and got rid of django image kit), so run 'pip install -r image_space/requirements.pip' again.
+Works: Redirect when account is created, change profile image, edit image brightness. 
+Packages used: 
+-SlickJS for slider.
+-CamanJS for image brightness editing. 
+-da_vinci image library -- the thing that actually edits/saves image editing, not the CamanJS interface. 
+-Pillow for ImageField in the model. 
+
+
+Older:
 Still trying to figure out Github... in order to get the test branch you have to 'Download ZIP'. If you try to clone it will grab the master and will not work. 
 
 You will have to run 'pip install -r image_space/requirements.pip' again after you grab the files and are in the right directory in powershell or cmd.
