@@ -267,10 +267,5 @@ class RegisterView(View):
                 return redirect_maybe
 
         else:
-            print "user"
-            print user_form.errors
-            print "picture"
-            print  picture_form.errors
             return render(request, 'image_space_app/register/register.html',
-                      {'user_form': user_form,
-                       'picture_form': picture_form, 'registered': registered})
+                      {'user_form': user_form, 'registered': registered})

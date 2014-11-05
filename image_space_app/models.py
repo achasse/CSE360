@@ -8,7 +8,7 @@ class UserPicture(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    picture = models.OneToOneField(UserPicture)
+    picture = models.OneToOneField(UserPicture, blank = True, null = True)
 
     def __unicode__(self):
         return self.user.username
