@@ -1,3 +1,9 @@
+11/5/14
+Crash if user doesn't upload a profile pic bug:
+OK, nevermind it does not work. I do have a repository that DOES work though.
+I'm just not sure how to merge it without overwriting the work Aaron has done.
+
+
 11/3/14
 New requirements added (and got rid of django image kit), so run 'pip install -r image_space/requirements.pip' again.
 Works: Redirect when account is created, change profile image, edit image brightness. 
