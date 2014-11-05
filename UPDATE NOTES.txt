@@ -1,3 +1,6 @@
+11/5/14 
+Maybe fixed it?
+
 11/5/14
 Crash if user doesn't upload a profile pic bug:
 OK, nevermind it does not work. I do have a repository that DOES work though.
