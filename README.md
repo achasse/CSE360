@@ -48,3 +48,4 @@ The source file for test is at image_space/image_space_app/tests folder.
 * da_vinci 0.2.1 Brightness edit
 * SlickJS for slider
 * CamanJS for brightness in-browser edit
+* Coverage 3.7.1 (Code coverage)
