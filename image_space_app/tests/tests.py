@@ -3,6 +3,7 @@ import datetime
 from django.utils import timezone
 from django.test import TestCase
 from image_space_app.views import *
+from image_space_app.forms import *
 from django.core.urlresolvers import resolve
 
 
@@ -54,5 +55,9 @@ class ImageSpaceTests(TestCase):
     #Test logout request when no user logged in
     def test_logout_no_active_user(self):
         logout()
+
+    #Test PicturesList view
+    def test_pictures_list_view(self):
+        
 
     

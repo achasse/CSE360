@@ -1,3 +1,8 @@
+11/8/14
+Run 'pip install -r image_space/requirements.pip' again to make sure 'coverage' is installed
+coverage provides code coverage report for unit tests (/htmlcov/index.html)
+Unit tests do not entirely work, but somehow shows 65% code coverage.
+
 11/5/14 
 Maybe fixed it?
 
