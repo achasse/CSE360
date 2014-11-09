@@ -6,3 +6,5 @@ cssselect==0.9.1
 pillow==2.6.1
 pytz==2014.7
 da_vinci==0.2.1
+coverage
+django-imagekit
