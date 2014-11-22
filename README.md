@@ -27,6 +27,7 @@ Instructions for setting up the project (modified from original copy posted at: 
 ## Software used
 * django 1.7.1
 * lettuce 0.2.20 (Testing)
+* Selenium (Functional Testing)
 * lxml 3.4.0
 * nose 1.3.4
 * cssselect 0.9.1
