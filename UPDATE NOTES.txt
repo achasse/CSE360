@@ -1,3 +1,6 @@
+11/22/2014
+New branch for functional tests created.
+
 11/8/14
 Run 'pip install -r image_space/requirements.pip' again to make sure 'coverage' is installed
 coverage provides code coverage report for unit tests (/htmlcov/index.html)
