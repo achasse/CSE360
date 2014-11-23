@@ -11,6 +11,11 @@ from image_space_app.models import *
 from django.core.urlresolvers import resolve
 from django.test import Client
 
+from django.test import LiveServerTestCase
+from django.contrib.auth.models import User
+from selenium import webdriver
+
+
 class ImageSpaceTests(TestCase):
 
     #Test ability for an existing user to log in (user is created then authenticated)
@@ -125,3 +130,56 @@ class ImageSpaceTests(TestCase):
         t1 = self.create_userprofile()
         self.assertTrue(instance(t1, UserProfile))
         self.assertEqual(t1.__unicode__(), t1.user)
+
+
+class AdminTestCase(LiveServerTestCase):
+    def setUp(self):
+        # setUp is where you instantiate the selenium webdriver and loads the browser.
+        User.objects.create_superuser(
+            username='admin',
+            password='admin',
+            email='admin@example.com'
+        )
+
+        self.selenium = webdriver.Firefox()
+        self.selenium.maximize_window()
+        super(AdminTestCase, self).setUp()
+
+    def tearDown(self):
+        # Call tearDown to close the web browser
+        self.selenium.quit()
+        super(AdminTestCase, self).tearDown()
+
+    def test_register_user(self):
+        
+        # Open the register page
+        self.selenium.get(
+            '%s%s' % (self.live_server_url,  "/register/")
+        )
+
+        # Fill in user form with required fields
+        self.selenium.find_element_by_id("id_username").send_keys("test")
+        self.selenium.find_element_by_id("id_first_name").send_keys("Bob")
+        self.selenium.find_element_by_id("id_last_name").send_keys("Tester")
+        self.selenium.find_element_by_id("id_email").send_keys("bTester@aol.com")
+        self.selenium.find_element_by_id("id_password").send_keys("test123")
+
+        # Click 'Sign up' button to register the user
+        signUp = self.selenium.find_element_by_link_text('Sign up')
+        signUp.click()
+        
+        self.selenium.get(
+            '%s%s' % (self.live_server_url,  "/profile/")
+        )
+        body = self.selenium.find_element_by_tag_name('body')
+        self.assertIn('Welcome back!', body.text)
+
+    def test_login_user(self):
+        signIn = self.selenium.find_element_by_link_text('Sign in')
+        signIn.click()
+        
+        self.selenium.find_element_by_id("id_username").send_keys("user1")
+        self.selenium.find_element_by_id("id_password").send_keys("hello")
+
+        body = self.selenium.find_element_by_tag_name('body')
+        self.assertIn('user1', body.text)
