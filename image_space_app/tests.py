@@ -132,7 +132,7 @@ class ImageSpaceTests(TestCase):
         self.assertEqual(t1.__unicode__(), t1.user)
 
 
-class AdminTestCase(LiveServerTestCase):
+class RegisterTestCase(LiveServerTestCase):
     def setUp(self):
         # setUp is where you instantiate the selenium webdriver and loads the browser.
         User.objects.create_superuser(
@@ -143,12 +143,12 @@ class AdminTestCase(LiveServerTestCase):
 
         self.selenium = webdriver.Firefox()
         self.selenium.maximize_window()
-        super(AdminTestCase, self).setUp()
+        super(RegisterTestCase, self).setUp()
 
     def tearDown(self):
         # Call tearDown to close the web browser
         self.selenium.quit()
-        super(AdminTestCase, self).tearDown()
+        super(RegisterTestCase, self).tearDown()
 
     def test_register_user(self):
         
@@ -173,13 +173,33 @@ class AdminTestCase(LiveServerTestCase):
         )
         body = self.selenium.find_element_by_tag_name('body')
         self.assertIn('Welcome back!', body.text)
-
-    def test_login_user(self):
-        signIn = self.selenium.find_element_by_link_text('Sign in')
-        signIn.click()
         
-        self.selenium.find_element_by_id("id_username").send_keys("user1")
-        self.selenium.find_element_by_id("id_password").send_keys("hello")
+class LoginTestCase(LiveServerTestCase):
+    def setUp(self):
+        # setUp is where you instantiate the selenium webdriver and loads the browser.
+        User.objects.create_superuser(
+            username='admin',
+            password='admin',
+            email='admin@example.com'
+        )
+
+        self.selenium = webdriver.Firefox()
+        self.selenium.maximize_window()
+        super(LoginTestCase, self).setUp()
+
+    def tearDown(self):
+        # Call tearDown to close the web browser
+        self.selenium.quit()
+        super(LoginTestCase, self).tearDown()
+    
+    def test_login_user(self):
+        #signIn = self.selenium.find_element_by_link_text('Sign in')
+        #signIn.click()
+        self.selenium.get(
+            '%s%s' % (self.live_server_url,  "/")
+        )
+        self.selenium.find_element_by_name("username").send_keys("user1")
+        self.selenium.find_element_by_name("password").send_keys("hello")
 
         body = self.selenium.find_element_by_tag_name('body')
         self.assertIn('user1', body.text)
