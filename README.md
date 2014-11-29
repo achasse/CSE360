@@ -20,6 +20,7 @@ Instructions for setting up the project (modified from original copy posted at: 
 
 * Go to your web browser and open "http://localhost:8000"
 
+* Run tests with `python manage.py test`
 
 *The UI is built with twitter bootstrap, less and jquery*
 
