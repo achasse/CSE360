@@ -62,8 +62,12 @@ WSGI_APPLICATION = 'image_space.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'test'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'production',
+        'USER': 'testUser',
+        'PASSWORD': 'tester1',
+        'HOST': '127.0.0.1',
+        'PORT': '3306'
     }
 }
 

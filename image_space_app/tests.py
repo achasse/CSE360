@@ -164,6 +164,7 @@ class RegisterTestCase(LiveServerTestCase):
         self.selenium.find_element_by_id("id_email").send_keys("bTester@aol.com")
         self.selenium.find_element_by_id("id_password").send_keys("test123")
 
+
         # Click 'Sign up' button to register the user
         signUp = self.selenium.find_element_by_link_text('Sign up')
         signUp.click()
@@ -201,5 +202,8 @@ class LoginTestCase(LiveServerTestCase):
         self.selenium.find_element_by_name("username").send_keys("user1")
         self.selenium.find_element_by_name("password").send_keys("hello")
 
+        self.selenium.find_element_by_link_text('Login').click()
+
+        
         body = self.selenium.find_element_by_tag_name('body')
         self.assertIn('user1', body.text)
